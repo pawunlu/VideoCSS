@@ -1,0 +1,205 @@
+@import url(reset.css);
+
+:root {
+    --color-principal: green;
+    --color-secundario: yellow;
+
+    --fondo-tarjeta: beige;
+
+    --color-letras: black;
+    
+    --alto-tarjeta: 10rem;
+
+    --cantidad-articulos: 4;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 12pt;
+    
+    background: linear-gradient(45deg, var(--color-principal), var(--color-secundario));
+    color: var(--color-letras);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        
+        --color-principal: rgb(20,20,20);
+        --color-secundario: rgb(100,100,100);
+        
+        --color-letras: white;
+
+        --fondo-tarjeta: rgb(150,150,150);
+    }
+}
+
+@media ( min-width: 1024px), (max-width: 480px) {
+    article {
+        --ratio-fotos: 2 / 3; 
+    }
+}
+@media ( 480px <= width <= 1024px) {
+    article {
+        --ratio-fotos: 1 / 1; 
+    }
+}
+
+
+h1 {
+    font-size: 2rem;
+    padding: 1rem;
+    border-bottom: 2px solid var(--color-letras);
+}
+
+section {
+
+
+}
+
+h2 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+    padding: 1rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--color-letras) -200%, rgba(0,0,0,0) 100%);
+    border-bottom: 1px solid var(--color-principal);
+    box-shadow: inset 0 0 0.5rem var(--color-letras);
+    text-shadow: 0 0 1rem var(--color-primario);
+}
+
+article {
+    position: relative;
+    width: min(80%, 25rem);
+    height:  var(--alto-tarjeta);
+    overflow: hidden;
+    margin: 0.5rem auto;
+    border-left: 2px solid var(--color-secundario);
+    border-right: 2px solid var(--color-letras);
+    border-radius: 1rem;
+    padding: 1rem;
+    padding-left: calc((var(--alto-tarjeta) * var(--ratio-fotos)) + 1rem);
+    box-sizing: border-box;
+    background-color: var(--fondo-tarjeta);
+}
+
+@media (hover) {
+
+    section {
+        transform-style: preserve-3d;
+        perspective: 30rem;
+    }
+
+    article {
+        transform: translateZ(calc(2em * var(--orden-foto))) translateY(calc(-4rem * var(--orden-foto)));
+        opacity: calc(1 - (var(--cantidad-articulos) - var(--orden-foto)) * 0.1 );
+        filter: blur(calc((var(--cantidad-articulos) - var(--orden-foto)) * 1px ));
+        transition: all 2s linear;
+        transition-delay: calc(0.5s * (var(--cantidad-articulos) - var(--orden-foto)));;
+    }
+
+    section:hover article {
+        transform: translateZ(0) translateY(0);
+        opacity: 1;
+        filter: blur(0);
+    }
+
+}
+
+h3 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--color-principal);
+    padding-bottom: 0.5rem;
+    line-height: 1.5rem;
+    height: 1.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+figcaption {
+    height: calc(var(--alto-tarjeta) - 5rem);
+    overflow: hidden;
+
+}
+
+article:nth-of-type(1) {
+    --orden-foto: 0;
+}
+article:nth-of-type(2) {
+    --orden-foto: 1;
+}
+article:nth-of-type(3) {
+    --orden-foto: 2;
+}
+article:nth-of-type(4) {
+    --orden-foto: 3;
+}
+article:nth-of-type(5) {
+    --orden-foto: 4;
+}
+
+img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: var(--alto-tarjeta);
+    animation: moviendoFotos 20s infinite;
+    animation-delay: calc(2s * (var(--cantidad-articulos) - var(--orden-foto)));
+
+    box-shadow: 0 0 0.5rem black;
+    filter: grayscale(1) blur(1px);
+}
+
+@media (prefer-reduce-motion) {
+    img{
+        animation: none;
+        filter: grayscale(0) blur(0);
+    }
+}
+
+
+@keyframes moviendoFotos {
+    0%, 100% {
+        transform: scale(1)  rotate3D(0,0,0,0) translateX(0);
+        box-shadow: 0 0 0.5rem black;
+        filter: grayscale(1) blur(1px);
+    }
+
+    25% {
+        filter: grayscale(0) blur(0);
+    }
+    
+    50% {
+        transform: scale(1.2) rotate3D(0,0,0.5, -5deg) translateX(-0.5rem);
+        box-shadow: 0 0.5rem 0.5rem black;
+        filter: grayscale(0) blur(0);
+    }
+}
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 1rem
+}
+
+a, a:visited {
+    color: var(--color-letras);
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    letter-spacing: 2px;
+}
+
+a:focus { 
+    outline: 2px solid var(--color-principal); 
+}
+
+a:hover::before,
+a:focus::before {
+    content: "+";
+    color: red;
+    font-weight: 700;
+    padding: 0 0.5rem;
+}
